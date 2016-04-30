@@ -7,7 +7,20 @@ Dependencies: Requests, Lxml, BeautifulSoup 4
 
 import requests 
 from bs4 import BeautifulSoup
+from datetime import date 
+import re
+def toDate(string):
+    """converts a string from "mm/dd/yyyy" to a date object"""
+    fields = re.split("/", string, 3)
+    return date(int(fields[2]),int(fields[0]),int(fields[1]))
 
+def isNum(num):
+    try:
+        float(num.replace(',',''))
+        return True
+    except ValueError:
+        return False
+    
 def scrape_historic_quotes(ticker_symbol):
     quotes=[]
     url = "http://www.investopedia.com/markets/stocks/"+str(ticker_symbol)+"/historical"
@@ -25,6 +38,13 @@ def scrape_historic_quotes(ticker_symbol):
                 val = historic_quote.find_all("td")[i].get_text()
             except:
                 continue
-            quote[str(key)]=str(val)
-        quotes.append(quote)
+            if isNum(val):
+                quote[str(key)]=float(val.replace(',',''))
+            elif key.lower()=="date":
+                quote[str(key)]=toDate(val)
+            else:
+                quote[str(key)]=str(val)
+            quote["Symbol"]=ticker_symbol.upper()
+        if len(quote.keys())>1:
+            quotes.append(quote)
     return quotes
