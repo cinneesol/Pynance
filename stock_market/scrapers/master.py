@@ -8,17 +8,17 @@ import os
 
 def process_work(company):
     try:
-        analysis = analyze(company["Symbol"],None)
+        quotes = scrape_historic_quotes(company["Symbol"])
+        analysis = analyze(quotes)
         return analysis
     except Exception as e:
-        print("Error for "+company["Symbol"])
+        print("Error for "+company["Symbol"]+" - "+str(e))
         return None
 
         
 if __name__=="__main__":
     analysis_results = []
     companies = scrape_exchange_listings()
-    queue = Queue()
     processes = 6
     results = []
     with Pool(processes) as p:

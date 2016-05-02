@@ -3,9 +3,9 @@ import re
 from datetime import date
 from statistics import mean, pstdev
 
-def analyze(symbol,lock):
+def analyze(historic_quotes):
     """returns a dict of statistics about the historic quotes for the symbol"""
-    quotes = sorted(scrape_historic_quotes(symbol), key=lambda x: x['Date'], reverse=True)[1:30]
+    quotes = sorted(historic_quotes, key=lambda x: x['Date'], reverse=True)[:30]
     dips = [x['Open']-x['Low'] for x in quotes]
     jumps = [x['High']-x['Open'] for x in quotes]
     analysis= {}
@@ -24,6 +24,3 @@ def analyze(symbol,lock):
     analysis['Symbol']=most_recent['Symbol']
     analysis['Date']= most_recent['Date']
     return analysis
-    
-if __name__=='__main__':
-    analyze("cfr", None)
