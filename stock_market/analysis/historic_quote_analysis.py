@@ -22,6 +22,8 @@ def analyze(symbol,lock):
     most_recent = quotes[0]
     analysis['target_entry_price'] = most_recent['Close'] - (analysis['avg_dip']-analysis['dip_std_dev'])
     analysis['Symbol']=most_recent['Symbol']
+    analysis['Date']= most_recent['Date']
+    return analysis
     
 if __name__=='__main__':
     analyze("cfr", None)

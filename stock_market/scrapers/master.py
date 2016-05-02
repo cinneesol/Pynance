@@ -2,21 +2,29 @@ from company_overviews import scrape_exchange_listings
 from scrape_historic_quotes import scrape_historic_quotes
 from historic_quote_analysis import analyze
 from csv import DictWriter
-from multiprocessing import Pool, Pipe
+from multiprocessing import Process, Queue, Pool
 import os
 
 
-def process_work(args):
-    company, conn = args
+def process_work(company):
     try:
         analysis = analyze(company["Symbol"],None)
-        conn.send(analysis)
+        return analysis
     except Exception as e:
         print("Error for "+company["Symbol"])
+        return None
+
         
 if __name__=="__main__":
     analysis_results = []
     companies = scrape_exchange_listings()
+    queue = Queue()
+    processes = 6
+    results = []
+    with Pool(processes) as p:
+        results.extend(p.map(process_work, [x for x in companies]))
+    
+    print("Results: "+str(len(results)))
     #start new csv file
     with open('analysis.csv','w') as csvfile:
         fieldnames = ['Symbol', 'Date','avg_day_high',
@@ -32,10 +40,6 @@ if __name__=="__main__":
                      'target_entry_price' ]
         writer = DictWriter(csvfile,fieldnames=fieldnames)
         writer.writeheader()
-        parent, child = Pipe()
-        with Pool(os.cpu_count()) as pool:
-            pool.map(process_work, [(x,child) for x in companies])
-        
-        while parent.poll(20):
-            result = parent.recv()
-            writer.writerow(result)
+        for r in results:
+            if r is not None:
+                writer.writerow(r)
