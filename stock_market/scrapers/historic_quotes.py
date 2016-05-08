@@ -21,7 +21,7 @@ def isNum(num):
     except ValueError:
         return False
     
-def scrape_historic_quotes(ticker_symbol):
+def scrape(ticker_symbol):
     quotes=[]
     url = "http://www.investopedia.com/markets/stocks/"+str(ticker_symbol)+"/historical"
     content = requests.get(url)

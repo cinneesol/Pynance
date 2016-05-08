@@ -1,5 +1,5 @@
 from company_overviews import scrape_exchange_listings
-from scrape_historic_quotes import scrape_historic_quotes
+from historic_quotes import scrape
 from historic_quote_analysis import analyze
 from multiprocessing import Pool
 import json
@@ -8,7 +8,7 @@ import dbprops
 import time
 def process_work(company):
     try:
-        quotes = scrape_historic_quotes(company["Symbol"])
+        quotes = scrape(company["Symbol"])
         analysis = analyze(quotes)
         return analysis
     except Exception as e:
