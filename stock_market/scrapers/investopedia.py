@@ -9,6 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import date 
 import re
+
 def toDate(string):
     """converts a string from "mm/dd/yyyy" to a date object"""
     fields = re.split("/", string, 3)
@@ -21,7 +22,7 @@ def isNum(num):
     except ValueError:
         return False
     
-def scrape(ticker_symbol):
+def historic_quotes(ticker_symbol):
     quotes=[]
     url = "http://www.investopedia.com/markets/stocks/"+str(ticker_symbol)+"/historical"
     content = requests.get(url)

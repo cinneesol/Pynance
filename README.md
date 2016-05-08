@@ -25,17 +25,17 @@ To use scraping and analytic features in your own scripts:
 getting historic quotes for a company: 
 
 ```
- from Pynance.stock_market.scrapers.historic_quotes import scrape 
+ from Pynance.stock_market.scrapers.investopedia import historic_quotes 
  
- microsoft_quotes = scrape('MSFT')
+ microsoft_quotes = historic_quotes('MSFT')
 ```
 
 analyzing historic quote statistics for a company
 ```
- from Pynance.stock_market.scrapers.historic_quotes import scrape
+ from Pynance.stock_market.scrapers.investopedia import historic_quotes 
  from Pynance.stock_market.analysis.historic_quote_analysis import analyze
  
- historic_statistical_analysis = analyze(scrape('MSFT'))
+ historic_statistical_analysis = analyze(historic_quotes('MSFT'))
 ```
     
      

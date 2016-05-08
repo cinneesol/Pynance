@@ -1,14 +1,16 @@
-from company_overviews import scrape_exchange_listings
-from historic_quotes import scrape
+from scrapers.nasdaq import exchange_listings
+from scrapers.investopedia import historic_quotes
 from historic_quote_analysis import analyze
 from multiprocessing import Pool
 import json
 from pg import DB
 import dbprops
 import time
+import os
+
 def process_work(company):
     try:
-        quotes = scrape(company["Symbol"])
+        quotes = historic_quotes(company["Symbol"])
         analysis = analyze(quotes)
         return analysis
     except Exception as e:
@@ -17,8 +19,8 @@ def process_work(company):
 
         
 if __name__=="__main__":
-    companies = scrape_exchange_listings()
-    processes = 8
+    companies = exchange_listings()
+    processes = os.cpu_count()
     results = []
     with Pool(processes) as p:
         results.extend(p.map(process_work, [x for x in companies]))
