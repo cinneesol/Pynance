@@ -1,6 +1,3 @@
-from scrape_historic_quotes import scrape_historic_quotes
-import re
-from datetime import date
 from statistics import mean, pstdev
 
 def analyze(historic_quotes):
