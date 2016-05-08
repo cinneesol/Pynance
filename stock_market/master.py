@@ -29,9 +29,14 @@ if __name__=="__main__":
                       port=dbprops.port, user=dbprops.user, passwd=dbprops.password)
         for result in results:
             if result is not None:
-                result["Date"] = result["Date"].isoformat()
-                postgres.insert('historic_analytic', data=result)
-        postgres.commit()
+                try:
+                    result["Date"] = result["Date"].isoformat()
+                    postgres.insert('historic_analytic', data=result)
+                    postgres.commit()
+                except Exception as e:
+                    print(str(e))
+                    
+        
     finally:
         postgres.close()
     print("TIme to run main function: "+str(time.process_time()))
