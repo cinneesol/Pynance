@@ -16,8 +16,16 @@ def analyze(historic_quotes):
     analysis['avg_jump'] = mean(jumps)
     analysis['dip_std_dev'] = pstdev(dips,analysis['avg_dip'])
     analysis['jump_std_dev'] = pstdev(jumps, analysis['avg_jump'])
+    weighted_close_sum=0.0
+    volume_sum=0
+    for q in quotes:
+        weighted_close_sum += (q['Close']*q['Volume'])
+        volume_sum+= q['Volume']
+    analysis['volume_weighted_avg_close']= (weighted_close_sum/volume_sum)
+    
     most_recent = quotes[0]
     analysis['target_entry_price'] = most_recent['Close'] - (analysis['avg_dip']-analysis['dip_std_dev'])
     analysis['Symbol']=most_recent['Symbol']
     analysis['Date']= most_recent['Date']
+    analysis['last_quote'] = most_recent
     return analysis

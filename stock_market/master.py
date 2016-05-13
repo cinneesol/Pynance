@@ -1,4 +1,4 @@
-from scrapers.nasdaq import exchange_listings
+from scrapers.nasdaq import exchange_listings, option_chain
 from scrapers.investopedia import historic_quotes
 from historic_quote_analysis import analyze
 from multiprocessing import Pool
@@ -7,18 +7,20 @@ from pg import DB
 import dbprops
 import time
 import os
+import sys
 
 def process_work(company):
+    analysis=None
     try:
         quotes = historic_quotes(company["Symbol"])
         analysis = analyze(quotes)
-        return analysis
     except Exception as e:
-        print("Error for "+company["Symbol"]+" - "+str(e))
-        return None
+        print("Error for historic quote analysis for  "+company["Symbol"]+" - "+str(e))
+        return None    
+    return analysis
 
-        
 if __name__=="__main__":
+    
     companies = exchange_listings()
     processes = os.cpu_count()
     results = []
@@ -33,8 +35,8 @@ if __name__=="__main__":
             if result is not None:
                 try:
                     result["Date"] = result["Date"].isoformat()
+                    result["last_quote"]["Date"]=result["last_quote"]["Date"].isoformat() 
                     postgres.insert('historic_analytic', data=result)
-                    postgres.commit()
                 except Exception as e:
                     print(str(e))
                     
