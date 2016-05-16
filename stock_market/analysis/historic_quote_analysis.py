@@ -16,6 +16,7 @@ def analyze(historic_quotes):
     analysis['avg_jump'] = mean(jumps)
     analysis['dip_std_dev'] = pstdev(dips,analysis['avg_dip'])
     analysis['jump_std_dev'] = pstdev(jumps, analysis['avg_jump'])
+    analysis['avg_volume'] = mean([x['Volume'] for x in quotes])
     weighted_close_sum=0.0
     volume_sum=0
     for q in quotes:
