@@ -7,11 +7,41 @@ to connect remotely for a postgresql database
 # database='stockdata'
 # user='stockdata'
 # password='st0ckdata'
-from _ast import Store
-
-
 """
 use this if you wish to instead specify a local sqlite db Store 
 
 """
 sqlite_file="stockdata.db"
+
+
+
+"""
+Database queries
+"""
+sqlite3_create_historic_analytic = """
+          CREATE TABLE IF NOT EXISTS historic_analytic(
+           symbol text,
+           date text,
+           avg_day_high real,
+           avg_day_low real,
+           avg_volume real,
+           day_high_std_dev real,
+           day_high_slope real,
+           day_low_std_dev real,
+           day_low_slope real,
+           avg_close real,
+           close_slope real,
+           close_std_dev real,
+           avg_dip real,
+           avg_jump real,
+           dip_std_dev real,
+           jump_std real,
+           volume_weighted_avg_close real,
+           target_entry_price real,
+           target_exit_price real,
+           last_close real,
+           PRIMARY KEY (SYMBOL,DATE)
+           )"""
+sqlite3_insert_historic_analytic = """
+        INSERT OR REPLACE INTO historic_analytic VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"""
+        

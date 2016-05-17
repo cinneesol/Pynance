@@ -65,35 +65,10 @@ if __name__=="__main__":
     try:
         db = sqlite3.connect(dbprops.sqlite_file)
         db_cur = db.cursor()
-        db_cur.execute("""
-          CREATE TABLE IF NOT EXISTS historic_analytic(
-           symbol text,
-           date text,
-           avg_day_high real,
-           avg_day_low real,
-           avg_volume real,
-           day_high_std_dev real,
-           day_high_slope real,
-           day_low_std_dev real,
-           day_low_slope real,
-           avg_close real,
-           close_slope real,
-           close_std_dev real,
-           avg_dip real,
-           avg_jump real,
-           dip_std_dev real,
-           jump_std real,
-           volume_weighted_avg_close real,
-           target_entry_price real,
-           target_exit_price real,
-           last_close real,
-           PRIMARY KEY (SYMBOL,DATE)
-           )"""           
-        )
+        db_cur.execute(dbprops.sqlite3_create_historic_analytic)
         
         tuple_list = generate_input_tuples(results)
-        db_cur.executemany("""
-        INSERT OR REPLACE INTO historic_analytic VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+        db_cur.executemany(dbprops.sqlite3_insert_historic_analytic,
         tuple_list)
         db.commit()
     except Exception as e:
