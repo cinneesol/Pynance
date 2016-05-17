@@ -1,5 +1,5 @@
 from scrapers.nasdaq import exchange_listings, option_chain
-from scrapers.investopedia import historic_quotes
+from scrapers.investopedia import historic_quotes, option_chain
 from analysis.historic_quote_analysis import analyze
 from multiprocessing import Pool
 import json
