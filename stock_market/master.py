@@ -33,8 +33,11 @@ def generate_input_tuples(results):
                                result['avg_day_low'],
                                result['avg_volume'],
                                result['day_high_std_dev'],
+                               result['day_high_slope'],
                                result['day_low_std_dev'],
+                               result['day_low_slope'],
                                result['avg_close'],
+                               result['close_slope'],
                                result['close_std_dev'],
                                result['avg_dip'],
                                result['avg_jump'],
@@ -42,6 +45,7 @@ def generate_input_tuples(results):
                                result['jump_std_dev'],
                                result['volume_weighted_avg_close'],
                                result['target_entry_price'],
+                               result['target_exit_price'],
                                result['last_quote']['Close']
                                ))
             except Exception as e:
@@ -69,8 +73,11 @@ if __name__=="__main__":
            avg_day_low real,
            avg_volume real,
            day_high_std_dev real,
+           day_high_slope real,
            day_low_std_dev real,
+           day_low_slope real,
            avg_close real,
+           close_slope real,
            close_std_dev real,
            avg_dip real,
            avg_jump real,
@@ -78,14 +85,15 @@ if __name__=="__main__":
            jump_std real,
            volume_weighted_avg_close real,
            target_entry_price real,
-           last_close real,,
+           target_exit_price real,
+           last_close real,
            PRIMARY KEY (SYMBOL,DATE)
            )"""           
         )
         
         tuple_list = generate_input_tuples(results)
         db_cur.executemany("""
-        INSERT OR REPLACE INTO historic_analytic VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+        INSERT OR REPLACE INTO historic_analytic VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
         tuple_list)
         db.commit()
     except Exception as e:
