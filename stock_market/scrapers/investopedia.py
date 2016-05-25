@@ -87,7 +87,6 @@ def option_chain(ticker_symbol):
     response = json.loads(content.text)
     months = [x['month'] for x in response['monthList']]
     year = response['monthList'][0]['year']
-    print(year)
     call_options = []
     put_options = []
     for month in months:

@@ -27,7 +27,7 @@ def analyze(historic_quotes):
         volume_sum+= q['Volume']
     analysis['volume_weighted_avg_close']= (weighted_close_sum/volume_sum)
     most_recent = quotes[0]
-    analysis['target_entry_price'] = most_recent['Close'] - (analysis['avg_dip']-analysis['dip_std_dev'])
+    analysis['target_entry_price'] = analysis['volume_weighted_avg_close'] - (analysis['avg_dip']-analysis['dip_std_dev'])
     analysis['target_exit_price'] = most_recent['Close'] + (analysis['avg_jump']-analysis['jump_std_dev'])
     analysis['Symbol']=most_recent['Symbol']
     analysis['Date']= most_recent['Date']

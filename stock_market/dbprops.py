@@ -45,3 +45,17 @@ sqlite3_create_historic_analytic = """
 sqlite3_insert_historic_analytic = """
         INSERT OR REPLACE INTO historic_analytic VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"""
         
+sqlite3_create_option_analysis = """
+CREATE TABLE IF NOT EXISTS options_analysis(
+symbol text,
+date text,
+option_month integer,
+weighted_eff_put_price real,
+weighted_eff_call_price real,
+PRIMARY KEY (symbol,date,option_month)
+)
+"""
+
+sqlite3_insert_option_analysis = """
+INSERT OR REPLACE INTO options_analysis VALUES(?,?,?,?,?) 
+"""

@@ -1,6 +1,7 @@
 from scrapers.nasdaq import exchange_listings, option_chain
 from scrapers.investopedia import historic_quotes, option_chain
 from analysis.historic_quote_analysis import analyze
+from analysis.options_analysis import analyze_options
 from multiprocessing import Pool
 import json
 import sqlite3
@@ -18,9 +19,14 @@ def process_work(company):
     except Exception as e:
         print("Error for historic quote analysis for  "+company["Symbol"]+" - "+str(e))
         return None    
+#     try:
+#         analysis['option_chain_analysis']=analyze_options(option_chain(company["Symbol"].lower()))
+#     except Exception as e:
+#         print("Error for option chain analysis for "+company['Symbol']+ " - "+str(e))
+#         analysis['option_chain_analysis']=None
     return analysis
 
-def generate_input_tuples(results):
+def generate_historic_analytic_input_tuples(results):
     """generates a tuple list for each analytic result to insert rows properly in an sqlite insertmany operation"""
     tuples = []
     for result in results:
@@ -52,6 +58,22 @@ def generate_input_tuples(results):
                 print(str(e))
     return tuples 
         
+def generate_options_input_tuples(results):
+    tuples = []
+    for result in results:
+        if result['option_chain_analysis'] is not None:
+            option_analysis = result['option_chain_analysis']
+            for month in option_analysis['month_analysis'].keys():
+                tuples.append(
+                              (option_analysis['symbol'],
+                               option_analysis['date'],
+                               month,
+                               option_analysis['month_analysis'][month]['weighted_effective_put_price'],
+                               option_analysis['month_analysis'][month]['weighted_effective_call_price'],
+                               )
+                              )
+    return tuples
+
 if __name__=="__main__":
     
     companies = exchange_listings()
@@ -66,11 +88,17 @@ if __name__=="__main__":
         db = sqlite3.connect(dbprops.sqlite_file)
         db_cur = db.cursor()
         db_cur.execute(dbprops.sqlite3_create_historic_analytic)
+        db_cur.execute(dbprops.sqlite3_create_option_analysis)
         
-        tuple_list = generate_input_tuples(results)
+        historic_analysis_tuple_list = generate_historic_analytic_input_tuples(results)
+#         options_analysis_tuple_list = generate_options_input_tuples(results)
+        
         db_cur.executemany(dbprops.sqlite3_insert_historic_analytic,
-        tuple_list)
+        historic_analysis_tuple_list)
         db.commit()
+#         db_cur.executemany(dbprops.sqlite3_insert_option_analysis,options_analysis_tuple_list)
+        
+#         db.commit()
     except Exception as e:
         print(str(e))
-    print("TIme to run main function: "+str(time.process_time()))
+    print("Finished scraping and analyzing stock market data")
