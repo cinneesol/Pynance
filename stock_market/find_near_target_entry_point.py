@@ -1,8 +1,8 @@
 import sqlite3 
+import dbprops
 
 
-
-def get_nearby_stocks(percent=0):
+def get_nearby_stocks(percent=0, profit=0):
     db = sqlite3.connect("stockdata.db")
     db.row_factory = sqlite3.Row
     c = db.cursor()
@@ -21,7 +21,7 @@ def get_nearby_stocks(percent=0):
        FROM historic_analytic 
        WHERE date =(SELECT MAX(date) FROM historic_analytic) 
        AND target_entry_price < target_exit_price
-       AND ABS(target_exit_price-target_entry_price)/target_entry_price > .015
+       AND ABS(target_exit_price-target_entry_price)/target_entry_price > ?
        AND DISTANCE <= ?
        AND close_slope > 0
        AND day_low_slope >0
@@ -30,7 +30,7 @@ def get_nearby_stocks(percent=0):
        AND last_close>10
        AND avg_close <=volume_weighted_avg_close
        
-       """, (float(percent),))
+       """, (float(profit),float(percent)))
     
     results = []
     for r in c.fetchall():
@@ -38,9 +38,10 @@ def get_nearby_stocks(percent=0):
     return results
 
 if __name__=='__main__':
+    profit_target = input("How much target profit(% multiplier): ")
     percent_away = input("How far away(% multiplier) from target entry point? \n")
     print("running query...")
-    results = get_nearby_stocks(percent=percent_away)
+    results = get_nearby_stocks(percent=percent_away, profit=profit_target)
     for stock in results:
         result = {}
         for field in stock.keys():
