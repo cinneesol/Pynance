@@ -22,11 +22,19 @@ def get_database(request):
 def find_near_target_entry(request):
     results = []
     query_params=json.loads(request.body.decode('utf-8'))
+    results_list = []
     with(sqlite3.connect('stockdata.db')) as connection:
-        cur = connection.cursor()
         connection.row_factory = sqlite3.Row
+        cur = connection.cursor()
         cur.execute(dbprops.sqlite3_find_near_target_entry, (float(query_params['profit']),float(query_params['percent'])))
         
         for r in cur.fetchall():
             results.append(r)
-    return JsonResponse(results,safe=False)
+        print(results)
+        for stock in results:
+            result = {}
+            for field in stock.keys():
+                if field.lower() in ('symbol', 'date', 'target_entry_price','target_exit_price'):
+                    result[field]=stock[field]
+            results_list.append(result)
+    return JsonResponse(results_list,safe=False)
