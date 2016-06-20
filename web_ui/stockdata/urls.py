@@ -22,5 +22,5 @@ from stockdata.views import find_near_target_entry
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='index.html')),
     url(r'^db_meta.ws', get_database),
-    url(r'^near_target_entry_point.ws', find_near_target_entry )
+    url(r'^rest/near_target_entry_point.ws$', find_near_target_entry )
 ]
