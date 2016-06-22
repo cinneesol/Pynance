@@ -11,6 +11,9 @@ Pygresql 5.0
 
 #Current Features
     New features will be built and released as soon as possible. 
+    v 0.1.1:
+        -scraper for retrieving options data from www.investopedia.com
+    
     v 0.1.0:
         - cli for home budget analysis
         - scraper for company overviews from www.nasdaq.com
@@ -28,6 +31,12 @@ getting historic quotes for a company:
  from Pynance.stock_market.scrapers.investopedia import historic_quotes 
  
  microsoft_quotes = historic_quotes('MSFT')
+```
+getting options information for a company
+```
+ from Pynance.stock_market.scrapers.investopedia import option_chain
+ 
+ microsoft_options_data = option_chain('MSFT')
 ```
 
 analyzing historic quote statistics for a company
