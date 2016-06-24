@@ -1,8 +1,6 @@
 from statistics import mean, pstdev
 from investopedia import option_chain
 
-
-
 def get_calls(options, month):
     calls_for_month = []
     for option in options['calls']:
@@ -23,7 +21,11 @@ def calculate_weighted_call_price(calls):
     for call in calls:
         cost = float(call['strikePrice'])+float(call['ask'])
         weighted_sum += int(call['openInterest'].replace(',',''))*cost
-    return weighted_sum/total_open_interest
+    
+    if total_open_interest>0:
+        return weighted_sum/total_open_interest
+    else:
+        return 0
 
 def calculate_weighted_put_price(puts):
     total_open_interest = sum([int(x['openInterest'].replace(',','')) for x in puts])
@@ -31,8 +33,11 @@ def calculate_weighted_put_price(puts):
     for put in puts:
         cost = float(put['strikePrice'])+float(put['ask'])
         weighted_sum += int(put['openInterest'].replace(',',''))*cost
-    return weighted_sum/total_open_interest
-
+    if total_open_interest>0:
+        return weighted_sum/total_open_interest
+    else:
+        return 0
+    
 def analyze_options(options):
     analysis = {'date':options['date'],'symbol':options['calls'][0]['symbol']}
     option_months = [x['month'] for x in options['calls']]
