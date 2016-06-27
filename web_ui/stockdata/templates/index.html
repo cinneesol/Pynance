@@ -3,33 +3,37 @@
 <!-- Stylesheets -->
 <link rel="stylesheet" href="/static/css/bootstrap.css" />
 <link rel="stylesheet" href="/static/css/bootstrap-theme.min.css" />
-<!-- Libraries -->
-<script src="/static/js/libs/angular.js"></script>
-<!-- Application script -->
-<script src="/static/js/stockdata/app.js"></script>
-<!-- Services -->
-<script src="/static/js/stockdata/service/stockdataService.js"></script>
-<!-- Controllers -->
-<script src="/static/js/stockdata/controller/profitEntryPointController.js"></script>
+<script src="https://code.jquery.com/jquery-3.0.0.js"
+	integrity="sha256-jrPLZ+8vDxt2FnE1zvZXCkCcebI/C8Dt5xyaQBjxQIo="
+	crossorigin="anonymous"></script>
 <title>Pynance</title>
 </head>
-<body data-ng-app="stockdata" data-ng-controller="profitEntryPointController">
+<body>
 	<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">StockData</a>
-    </div>
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">StockData</a>
+			</div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" >
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Quick Analysis </a></li>
-        
-      </ul>
-      
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Quick Analysis </a></li>
+
+				</ul>
+
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
 </body>
+
+<script type="text/javascript">
+
+  $.post("rest/near_target_entry_point.ws",
+		  JSON.stringify({"profit":.01,"percent":.01}),
+		  function(data,status,xhr){alert(data)});
+</script>
 </html>
