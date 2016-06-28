@@ -28,12 +28,38 @@
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
+	<div class="container-fluid">
+		<table id="scalp_candidates" class="table table-striped">
+			<thead class="thead-default">
+				<th>Symbol</th>
+				<th>Date</th>
+				<th>Target Entry Price</th>
+				<th>Target Exit Price</th>
+			</thead>
+		</table>
+	</div>
 </body>
 
 <script type="text/javascript">
+	$.post("rest/near_target_entry_point.ws", JSON.stringify({
+		"profit" : .01,
+		"percent" : .01
+	}), function(data, status, xhr) {
+		drawTable(data);
+	});
+	var drawTable = function(data) {
+		for (var i = 0; i < data.length; i++) {
+			drawRow(data[i]);
+		}
+	};
+	var drawRow = function(rowData) {
+		var row = $("<tr />");
+		$('#scalp_candidates').append(row);
+		row.append($("<td>" + rowData.symbol + "</td>"))
+		row.append($("<td>" + rowData.date + "</td>"))
+		row.append($("<td>" + rowData.target_entry_price + "</td>"))
+		row.append($("<td>" + rowData.target_exit_price + "</td>"))
 
-  $.post("rest/near_target_entry_point.ws",
-		  JSON.stringify({"profit":.01,"percent":.01}),
-		  function(data,status,xhr){alert(data)});
+	}
 </script>
 </html>
