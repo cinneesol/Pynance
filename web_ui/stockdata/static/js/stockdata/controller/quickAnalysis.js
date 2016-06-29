@@ -5,14 +5,19 @@
 
 var quickAnalysisController = function($scope,quickAnalysisService){
 	$scope.candidates = []
-	
+	$scope.percentage=1;
+	$scope.profit=1;
 	var logresponse = function(result){
 		$scope.candidates=result
-		console.log(JSON.stringif($scope.candidates,null,4))
 	}
 	
-	quickAnalysisService.findNearTargetEntry(.01,.01).then(logresponse);
+	$scope.getCandidates = function(){
+		var percent = $scope.percentage/100;
+		var profit = $scope.profit/100;
+		quickAnalysisService.findNearTargetEntry(percent,profit).then(logresponse);
+	}
 	
+	$scope.getCandidates();
 	
 }
 angular.module("stockdata").controller('quickAnalysisController',['$scope','quickAnalysisService',quickAnalysisController]);
