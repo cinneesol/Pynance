@@ -6,9 +6,14 @@
 <script src="https://code.jquery.com/jquery-3.0.0.js"
 	integrity="sha256-jrPLZ+8vDxt2FnE1zvZXCkCcebI/C8Dt5xyaQBjxQIo="
 	crossorigin="anonymous"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+<script src="/static/js/stockdata/app.js"></script>
+<script src="/static/js/stockdata/service/quickAnalysis.js"></script>
+<script src="/static/js/stockdata/controller/quickAnalysis.js"></script>
 <title>Pynance</title>
 </head>
-<body>
+<body ng-app="stockdata">
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<!-- Brand and toggle get grouped for better mobile display -->
@@ -28,7 +33,7 @@
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
-	<div class="container-fluid">
+	<div class="container-fluid" ng-controller="quickAnalysisController">
 		<table id="scalp_candidates" class="table table-striped">
 			<thead class="thead-default">
 				<th>Symbol</th>
@@ -36,30 +41,14 @@
 				<th>Target Entry Price</th>
 				<th>Target Exit Price</th>
 			</thead>
+			<tr ng-repeat="candidate in candidates">
+				<td>{{candidate.symbol}}</td>
+				<td>{{candidate.date}}</td>
+				<td>{{candidate.target_entry_price}}</td>
+				<td>{{candidate.target_exit_price}}</td>
+			</tr>
 		</table>
 	</div>
 </body>
 
-<script type="text/javascript">
-	$.post("rest/near_target_entry_point.ws", JSON.stringify({
-		"profit" : .01,
-		"percent" : .01
-	}), function(data, status, xhr) {
-		drawTable(data);
-	});
-	var drawTable = function(data) {
-		for (var i = 0; i < data.length; i++) {
-			drawRow(data[i]);
-		}
-	};
-	var drawRow = function(rowData) {
-		var row = $("<tr />");
-		$('#scalp_candidates').append(row);
-		row.append($("<td>" + rowData.symbol + "</td>"))
-		row.append($("<td>" + rowData.date + "</td>"))
-		row.append($("<td>" + rowData.target_entry_price + "</td>"))
-		row.append($("<td>" + rowData.target_exit_price + "</td>"))
-
-	}
-</script>
 </html>
