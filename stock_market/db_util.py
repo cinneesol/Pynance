@@ -1,12 +1,17 @@
 
 
 
-def insert(table, **kwargs):
+def insert(table, conn=None, data={}):
+    """
+     Generates and executes sql insert statement for field/value pairs 
+     given as kwargs
+    """
     fields = []
     values = []
-    for key in kwargs.keys():
-        fields.append(key)
-        values.append(kwargs[key])
+    for key in data.keys():
+        if key != None and key.strip()!="":
+            fields.append(key.lower().replace(" ","_"))
+            values.append(data[key])
     
     insert_stmt = "INSERT INTO "+str(table)+" "
     insert_stmt = insert_stmt+str(tuple(fields)).replace('"','')
@@ -16,7 +21,7 @@ def insert(table, **kwargs):
         insert_stmt = insert_stmt+"?,"
     insert_stmt = insert_stmt+"?)"
     cursor = conn.cursor()
-    cursor.execute(insert_stmt,str(tuple(values)))
+    cursor.execute(insert_stmt,tuple(values))
     conn.commit()
         
         

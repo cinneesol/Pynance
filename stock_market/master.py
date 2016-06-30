@@ -2,10 +2,12 @@ from scrapers.nasdaq import exchange_listings, option_chain
 from scrapers.investopedia import historic_quotes, option_chain
 from analysis.historic_quote_analysis import analyze
 from analysis.options_analysis import analyze_options
+
 from multiprocessing import Pool
 import json
 import sqlite3
 import dbprops
+import db_util
 import time
 import os
 import sys
@@ -80,9 +82,9 @@ if __name__=="__main__":
     companies = exchange_listings()
     processes = os.cpu_count()
     results = []
-    with Pool(processes) as p:
-        results.extend(p.map(process_work, [x for x in companies]))
-     
+#     with Pool(processes) as p:
+#         results.extend(p.map(process_work, [x for x in companies]))
+#      
     print("Results: "+str(len(results)))
     
     try:
@@ -90,7 +92,18 @@ if __name__=="__main__":
         db_cur = db.cursor()
         db_cur.execute(dbprops.sqlite3_create_historic_analytic)
         db_cur.execute(dbprops.sqlite3_create_option_analysis)
-        
+        #we want to remove and 
+        db_cur.execute(dbprops.sqlite3_drop_company_overviews)
+        db_cur.execute(dbprops.sqlite3_create_company_overview)
+        for company in companies:
+            try:
+                db_util.insert(table="company_overview",conn=db, data=company)
+                
+            except:
+                print("error")
+                #TODO log error
+        db.commit()
+        sys.exit()
         historic_analysis_tuple_list = generate_historic_analytic_input_tuples(results)
         options_analysis_tuple_list = generate_options_input_tuples(results)
         
