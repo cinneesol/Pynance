@@ -2,11 +2,11 @@
 Update these to the appropriate database properties for your environment
 to connect remotely for a postgresql database
 """
-# host='192.168.0.13'
-# port=5432
-# database='stockdata'
-# user='stockdata'
-# password='st0ckdata'
+postgres_host='192.168.0.13'
+postgres_port=5432
+postgres_database='stockdata'
+postgres_user='stockdata'
+postgres_password='st0ckdata'
 """
 use this if you wish to instead specify a local sqlite db Store 
 
@@ -18,6 +18,23 @@ sqlite_file="stockdata.db"
 """
 Database queries
 """
+
+sqlite3_create_company_overview = """
+  CREATE TABLE IF NOT EXISTS company_overview(
+      symbol text,
+      name text,
+      lastsale numeric,
+      marketcap numeric,
+      ipoyear text,
+      sector text,
+      industry text,
+      summary_quote text,
+      PRIMARY KEY(symbol,name)
+      )
+"""
+sqlite3_drop_company_overviews = """
+  DROP TABLE IF EXISTS company_overview;
+  """
 sqlite3_create_historic_analytic = """
           CREATE TABLE IF NOT EXISTS historic_analytic(
            symbol text,
