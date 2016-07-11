@@ -16,11 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.views.generic import TemplateView
-from stockdata.views import get_database
 from stockdata.views import find_near_target_entry
+from web_ui.stockdata.views import quick_analysis
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='index.html')),
-    url(r'^db_meta.ws', get_database),
+    url(r'^rest/quick_analysis.ws$', quick_analysis),
     url(r'^rest/near_target_entry_point.ws$', find_near_target_entry )
 ]

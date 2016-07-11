@@ -2,19 +2,27 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from stock_market.scrapers.investopedia import historic_quotes,option_chain
+from stock_market.analysis.historic_quote_analysis import analyze
+from stock_market.analysis.options_analysis import analyze_options
 
 import sqlite3
 import json
 
 import dbprops
 
-def get_database(request):
-    rows = None
-    with (sqlite3.connect('db.sqlite3')) as connection:
-        cursor = connection.cursor()
-        cursor.execute('SELECT * FROM sqlite_master')
-        rows = cursor.fetchall()
-    return JsonResponse(rows, safe=False)
+@require_http_methods(['POST'])
+@csrf_exempt
+def quick_analysis(request):
+    query_params=json.loads(request.body.decode('utf-8'))
+    stock = query_params['symbol'].lower()
+    analysis = {}
+    analysis['historic_quotes']=analyze(historic_quotes(stock))
+    try:
+        analysis['options_analysis']=analyze_options(option_chain(stock))
+    except:
+        analysis['option_analysis']="No options data available to analyze"
+    return JsonResponse(analysis)
 
 
 @require_http_methods(['POST'])
@@ -38,3 +46,6 @@ def find_near_target_entry(request):
                     result[field]=stock[field]
             results_list.append(result)
     return JsonResponse(results_list,safe=False)
+
+
+    

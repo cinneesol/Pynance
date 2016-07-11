@@ -1,5 +1,4 @@
 from statistics import mean, pstdev
-from investopedia import option_chain
 
 def get_calls(options, month):
     calls_for_month = []

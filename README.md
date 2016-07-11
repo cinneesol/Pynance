@@ -23,7 +23,7 @@ Pygresql 5.0
     
     
 ### To use these modules in your own scripts:
-To use scraping and analytic features in your own scripts: 
+To use scraping and analytic features in your own scripts(Make sure that Pynance folder is in your PYTHONPATH): 
 
 getting historic quotes for a company: 
 
