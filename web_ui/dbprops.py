@@ -108,4 +108,3 @@ sqlite3_find_upcoming_positive_options_analysis = """
         WHERE o.date = (SELECT MAX(date) FROM options_analysis)
         AND o.weighted_eff_put_price <= o.weighted_eff_call_price
     """
-    

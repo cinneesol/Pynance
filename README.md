@@ -5,12 +5,18 @@ mega-project containing python scripts and programs to handle all things finance
 Dependendent packages for stock market data scraping:
 lxml 3.4.4
 BeautifulSoup 4
-Pygresql 5.0
+
 
 
 
 #Current Features
     New features will be built and released as soon as possible. 
+    v 0.2.0:
+        -added Django and AngularJS powered web UI for viewing stock data 
+           related information
+        -added web view for searching uptrending stocks by their target entry and 
+           target profit percentage
+           
     v 0.1.1:
         -scraper for retrieving options data from www.investopedia.com
     
@@ -47,4 +53,15 @@ analyzing historic quote statistics for a company
  historic_statistical_analysis = analyze(historic_quotes('MSFT'))
 ```
     
-     
+###To run the Pynance Django web server
+To run the Pynance web server, alter the sqlite_file property in the
+web_ui/dbprops.py to point to the sqlite3 database file that your stock_market/dbprops.py 
+points to. Open a command window in the web_ui folder and run manage.py with the first parameter
+being 'runserver' and the second being an optional parameter
+for the port that you wish the server to be bound to. For example, to run the server off of port 8080:
+
+```
+python manage.py runserver 8080
+```     
+This will launch the Django server listening on port 8080. Hitting http://localhost:8080/stockdata will take 
+you to the home page for the stock data web app on the Django server.
