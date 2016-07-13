@@ -85,3 +85,27 @@ sqlite3_find_near_target_entry = """
            AND avg_close <=volume_weighted_avg_close
            
            """
+sqlite3_find_uptrend_historical_analysis = """
+        SELECT h.symbol,
+        h.date,
+        h.avg_day_high,
+        h.avg_day_low,
+        h.avg_day_close
+        FROM historic_analytic h
+        WHERE h.date=(SELECT MAX(date) FROM historic_analytic)
+        AND h.close_slope >0
+        AND h.day_low_slope > 0
+        AND h.day_high_slope >0
+    """
+    
+sqlite3_find_upcoming_positive_options_analysis = """
+        SELECT  o.symbol,
+        o.date,
+        o.option_month,
+        o.weighted_eff_put_price,
+        o.weighted_eff_call_price
+        FROM options_analysis o
+        WHERE o.date = (SELECT MAX(date) FROM options_analysis)
+        AND o.weighted_eff_put_price <= o.weighted_eff_call_price
+    """
+    
