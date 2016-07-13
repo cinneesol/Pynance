@@ -8,6 +8,7 @@
 	crossorigin="anonymous"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+<script src="/static/js/lib/angular-ui-router.js"></script>
 <script src="/static/js/stockdata/app.js"></script>
 <script src="/static/js/stockdata/service/findNearEntryPoint.js"></script>
 <script src="/static/js/stockdata/controller/findNearEntryPoint.js"></script>
@@ -18,13 +19,13 @@
 		<div class="container-fluid">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">StockData</a>
+				<a class="navbar-brand" data-ui-sref="/">StockData</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Find Near Target Entry </a></li>
+					<li class="active"><a data-ui-sref="/findnearentry">Find Near Target Entry </a></li>
 
 				</ul>
 
@@ -33,26 +34,7 @@
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
-	<div class="container-fluid" ng-controller="findNearEntryPointController">
-		<div>
-		  <span><strong>Percent away from entry</strong></span><input type="number" ng-model="percentage" ng-change="getCandidates()"/>
-		  <span><strong>Percent profit at exit price</strong></span><input type="number" ng-model="profit" ng-change="getCandidates()" />
-		</div>
-		<table id="scalp_candidates" class="table table-striped">
-			<thead class="thead-default">
-				<th>Symbol</th>
-				<th>Date</th>
-				<th>Target Entry Price</th>
-				<th>Target Exit Price</th>
-			</thead>
-			<tr ng-repeat="candidate in candidates">
-				<td ng-bind="candidate.symbol"></td>
-				<td ng-bind="candidate.date"></td>
-				<td ng-bind="candidate.target_entry_price"></td>
-				<td ng-bind="candidate.target_exit_price"></td>
-			</tr>
-		</table>
-	</div>
+	<div ui-view=""></div>
 </body>
 
 </html>

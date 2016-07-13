@@ -1,0 +1,22 @@
+<div class="container-fluid">
+	<div>
+		<span><strong>Percent away from entry</strong></span><input
+			type="number" ng-model="percentage" ng-change="getCandidates()" /> <span><strong>Percent
+				profit at exit price</strong></span><input type="number" ng-model="profit"
+			ng-change="getCandidates()" />
+	</div>
+	<table id="scalp_candidates" class="table table-striped">
+		<thead class="thead-default">
+			<th>Symbol</th>
+			<th>Date</th>
+			<th>Target Entry Price</th>
+			<th>Target Exit Price</th>
+		</thead>
+		<tr ng-repeat="candidate in candidates">
+			<td ng-bind="candidate.symbol"></td>
+			<td ng-bind="candidate.date"></td>
+			<td ng-bind="candidate.target_entry_price"></td>
+			<td ng-bind="candidate.target_exit_price"></td>
+		</tr>
+	</table>
+</div>

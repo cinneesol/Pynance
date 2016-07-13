@@ -11,7 +11,7 @@ postgres_password='st0ckdata'
 use this if you wish to instead specify a local sqlite db Store 
 
 """
-sqlite_file="stockdata.db"
+sqlite_file='C:\\Users\\rcove\\SoftwareDev\\database\\sqlite\\stockdata.db'
 
 
 
