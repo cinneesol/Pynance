@@ -31,7 +31,7 @@ def find_near_target_entry(request):
     results = []
     query_params=json.loads(request.body.decode('utf-8'))
     results_list = []
-    with(sqlite3.connect('stockdata.db')) as connection:
+    with(sqlite3.connect(dbprops.sqlite_file)) as connection:
         connection.row_factory = sqlite3.Row
         cur = connection.cursor()
         cur.execute(dbprops.sqlite3_find_near_target_entry, (float(query_params['profit']),float(query_params['percent'])))

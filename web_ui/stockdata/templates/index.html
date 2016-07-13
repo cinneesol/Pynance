@@ -9,8 +9,8 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 <script src="/static/js/stockdata/app.js"></script>
-<script src="/static/js/stockdata/service/quickAnalysis.js"></script>
-<script src="/static/js/stockdata/controller/quickAnalysis.js"></script>
+<script src="/static/js/stockdata/service/findNearEntryPoint.js"></script>
+<script src="/static/js/stockdata/controller/findNearEntryPoint.js"></script>
 <title>Pynance</title>
 </head>
 <body ng-app="stockdata">
@@ -33,7 +33,7 @@
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
-	<div class="container-fluid" ng-controller="quickAnalysisController">
+	<div class="container-fluid" ng-controller="findNearEntryPointController">
 		<div>
 		  <span><strong>Percent away from entry</strong></span><input type="number" ng-model="percentage" ng-change="getCandidates()"/>
 		  <span><strong>Percent profit at exit price</strong></span><input type="number" ng-model="profit" ng-change="getCandidates()" />

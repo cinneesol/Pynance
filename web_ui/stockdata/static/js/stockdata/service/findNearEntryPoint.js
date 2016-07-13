@@ -1,4 +1,4 @@
-var quickAnalysisService = function($http){
+var findNearEntryPointService = function($http){
 	
 	var processResponse = function(response){
 		return response.data;
@@ -16,4 +16,4 @@ var quickAnalysisService = function($http){
 	}
 }										
 
-angular.module('stockdata').factory('quickAnalysisService',["$http",quickAnalysisService]);
+angular.module('stockdata').factory('findNearEntryPointService',["$http",findNearEntryPointService]);

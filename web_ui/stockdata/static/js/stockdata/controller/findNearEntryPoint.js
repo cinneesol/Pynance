@@ -3,7 +3,7 @@
  * near target entry and profit points
  */
 
-var quickAnalysisController = function($scope,quickAnalysisService){
+var findNearEntryPointController = function($scope,findNearEntryPointService){
 	$scope.candidates = []
 	$scope.percentage=1;
 	$scope.profit=1;
@@ -14,10 +14,10 @@ var quickAnalysisController = function($scope,quickAnalysisService){
 	$scope.getCandidates = function(){
 		var percent = $scope.percentage/100;
 		var profit = $scope.profit/100;
-		quickAnalysisService.findNearTargetEntry(percent,profit).then(logresponse);
+		findNearEntryPointService.findNearTargetEntry(percent,profit).then(logresponse);
 	}
 	
 	$scope.getCandidates();
 	
 }
-angular.module("stockdata").controller('quickAnalysisController',['$scope','quickAnalysisService',quickAnalysisController]);
+angular.module("stockdata").controller('findNearEntryPointController',['$scope','findNearEntryPointService',findNearEntryPointController]);
