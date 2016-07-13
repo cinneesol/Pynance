@@ -1,5 +1,5 @@
 /**
- * Quick analysis controller for querying stocks
+ *  controller for querying stocks
  * near target entry and profit points
  */
 

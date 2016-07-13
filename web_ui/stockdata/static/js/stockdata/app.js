@@ -13,4 +13,9 @@ sd.config(function($stateProvider,$urlRouterProvider){
 		templateUrl: '/stockdata/findnearentry.html',
 		controller: 'findNearEntryPointController'
 	})
+	.state('/quickanalysis',{
+		url:'/quickanalysis',
+		templateUrl: '/stockdata/quickanalysis.html',
+		controller: 'quickAnalysisController'
+	})
 });

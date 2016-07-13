@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='index.html')),
     url(r'^landing.html$', TemplateView.as_view(template_name='landing.html')),
     url(r'^findnearentry.html$', TemplateView.as_view(template_name='findNearEntryPoint.html')),
+    url(r'^quickanalysis.html$', TemplateView.as_view(template_name='quickAnalysis.html')),
     
     url(r'^rest/quick_analysis.ws$', quick_analysis),
     url(r'^rest/near_target_entry_point.ws$', find_near_target_entry )
