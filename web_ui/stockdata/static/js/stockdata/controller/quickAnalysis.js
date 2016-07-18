@@ -5,15 +5,15 @@
 
 var quickAnalysisController = function($scope,quickAnalysisService){
 	$scope.symbol="";
-	$scope.quickAnalysisData = {};
+	$scope.qaData = {"symbol":"MT"};
 	
 	var processQuickAnalysisResponse = function(response){
-		$scope.quickAnalysisData = response;
-		console.log(JSON.stringify(response,null,4))
+		$scope.qaData = response;
+		console.log(JSON.stringify($scope.qaData,null,4))
 	}
 	
 	$scope.doQuickAnalysis = function(){
-		$scope.quickAnalysisData = {};
+		$scope.qaData = {};
 		quickAnalysisService.quickAnalysis($scope.symbol).then(processQuickAnalysisResponse);
 		
 	}
