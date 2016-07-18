@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 from datetime import date 
 import re
 import json
+import logging
 
 def toDate(string):
     """converts a string from "mm/dd/yyyy" to a date object"""
@@ -67,7 +68,8 @@ def historic_quotes(ticker_symbol):
             try: 
                 val = historic_quote.find_all("td")[i].get_text()
             except:
-                continue
+                logging.error("Failed to extract historic quote value from:\n"+str(historic_quote))
+                
             if isNum(val):
                 quote[str(key)]=float(val.replace(',',''))
             elif key.lower()=="date":
@@ -79,6 +81,31 @@ def historic_quotes(ticker_symbol):
             quotes.append(quote)
     return quotes
 
+def dividend_history(ticker_symbol):
+    """Scrape the dividend history information from investopedia.com"""
+    dividends = []
+    url="http://www.investopedia.com/markets/stocks/"+str(ticker_symbol).lower()+"/historical/?HistoryType=Dividends"
+    content = requests.get(url)
+    soup = BeautifulSoup(content.text,'lxml')
+    data_table = soup.find_all("table", class_="table-data")[0]
+    header_row = data_table.find_all("th")
+    data_rows = data_table.find_all("tr")
+    for dividend_history in data_rows:
+        dividend={}
+        for i in range(0,len(header_row)):
+            key=header_row[i].get_text().lower()
+            val=None
+            try:
+                val=dividend_history.find_all("td")[i].get_text()
+            except:
+                logging.error("Failed to get dividend history from html:\n"+str(dividend_history))
+            dividend[key]=val 
+        dividend['symbol']=ticker_symbol.lower()
+        dividends.append(dividend)
+    return dividends
+    
+            
+                
 def option_chain(ticker_symbol):
     """This one has a direct public facing api call that will return a JSON object with
     call and put data """
@@ -108,6 +135,6 @@ def option_chain(ticker_symbol):
     return {'calls':call_options, 'puts':put_options, 'date':date.today().isoformat()}
 
 if __name__=='__main__':
-    print(json.dumps(option_chain('cfr')))
+    print(json.dumps(dividend_history('cfr')))
 
     
