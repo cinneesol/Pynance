@@ -14,7 +14,6 @@ use this if you wish to instead specify a local sqlite db Store
 sqlite_file='C:\\Users\\rcove\\SoftwareDev\\database\\sqlite\\stockdata.db'
 
 
-
 """
 Database queries
 """

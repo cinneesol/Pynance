@@ -11,7 +11,8 @@ to connect remotely for a postgresql database
 use this if you wish to instead specify a local sqlite db Store 
 
 """
-sqlite_file='C:\\Users\\rcove\\SoftwareDev\\database\\sqlite\\stockdata.db'
+sqlite_file="C:\\Users\\rcove\\SoftwareDev\\database\\sqlite\\stockdata.db"
+
 
 
 

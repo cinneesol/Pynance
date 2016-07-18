@@ -12,6 +12,9 @@ import time
 import os
 import sys
 
+#TODO: get rid of global options flag
+include_options=False
+
 def process_work(company):
     """returns analysis of recent historic quotes for company."""
     analysis=None
@@ -21,11 +24,12 @@ def process_work(company):
     except Exception as e:
         print("Error for historic quote analysis for  "+company["Symbol"]+" - "+str(e))
         return None    
-    try:
-        analysis['option_chain_analysis']=analyze_options(option_chain(company["Symbol"].lower()))
-    except Exception as e:
-        print("Error for option chain analysis for "+company['Symbol']+ " - "+str(e))
-        analysis['option_chain_analysis']=None
+    if include_options:
+        try:
+            analysis['option_chain_analysis']=analyze_options(option_chain(company["Symbol"].lower()))
+        except Exception as e:
+            print("Error for option chain analysis for "+company['Symbol']+ " - "+str(e))
+            analysis['option_chain_analysis']=None
     return analysis
 
 def generate_historic_analytic_input_tuples(results):
@@ -78,7 +82,11 @@ def generate_options_input_tuples(results):
     return tuples
 
 if __name__=="__main__":
-    
+    if len(sys.argv)>1 and sys.argv[1]=='include-options':
+        include_options=True
+    else:
+        include_options=False
+        
     companies = exchange_listings()
     processes = os.cpu_count()
     results = []
@@ -104,13 +112,15 @@ if __name__=="__main__":
                 #TODO log error
         db.commit()
         historic_analysis_tuple_list = generate_historic_analytic_input_tuples(results)
-        options_analysis_tuple_list = generate_options_input_tuples(results)
+        if include_options:
+            options_analysis_tuple_list = generate_options_input_tuples(results)
         
         db_cur.executemany(dbprops.sqlite3_insert_historic_analytic,
         historic_analysis_tuple_list)
         db.commit()
-        db_cur.executemany(dbprops.sqlite3_insert_option_analysis,options_analysis_tuple_list)
-        db.commit()
+        if include_options:
+            db_cur.executemany(dbprops.sqlite3_insert_option_analysis,options_analysis_tuple_list)
+            db.commit()
     except Exception as e:
         print(str(e))
     print("Finished scraping and analyzing stock market data")
