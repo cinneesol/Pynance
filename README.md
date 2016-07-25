@@ -36,8 +36,13 @@ BeautifulSoup 4
 ### To use these modules in your own scripts:
 To use scraping and analytic features in your own scripts(Make sure that Pynance folder is in your PYTHONPATH): 
 
+get a list of companies and their information from the NYSE,AMEX,and NASDAQ exchanges:
+```
+ from Pynance.stock_market.scrapers.nasdaq import exchange_listings
+ 
+ companies = exchange_listings() 
+```
 getting historic quotes for a company: 
-
 ```
  from Pynance.stock_market.scrapers.investopedia import historic_quotes 
  
