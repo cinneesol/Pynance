@@ -9,7 +9,7 @@ from stock_market.analysis.options_analysis import analyze_options
 import sqlite3
 import json
 
-import dbprops
+from database import dbprops
 
 @require_http_methods(['POST'])
 @csrf_exempt
@@ -22,6 +22,7 @@ def quick_analysis(request):
         analysis['options_analysis']=analyze_options(option_chain(stock))
     except:
         analysis['option_analysis']="No options data available to analyze"
+        
     return JsonResponse(analysis)
 
 
@@ -47,5 +48,16 @@ def find_near_target_entry(request):
             results_list.append(result)
     return JsonResponse(results_list,safe=False)
 
-
-    
+# @require_http_methods(['POST'])
+# @csrf_exempt
+# def get_company_overview(request):
+#     results = []
+#     query_params = json.loads(request.body.decode('utf-8'))
+#     with(sqlite3.connect(dbprops.sqlite_file)) as connection:
+#         connection.row_factory = sqlite3.Row
+#         cur = connection.cursor()
+#         cur.execute(dbprops.sqlite3_find_company_profile, query_params['symbol'].upper())
+#         
+#         for r in cur.fetchall():
+#             results.append(r)
+#     return JsonResponse(results, safe=False)
