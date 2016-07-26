@@ -11,6 +11,11 @@ BeautifulSoup 4
 
 #Current Features
     New features will be built and released as soon as possible. 
+    v 0.2.2:
+        -package restructuring
+        -cleaning up test and demo files
+        -adding yahoo finance historical data scraper
+        
     v 0.2.1:
         -added property to determine whether or not to scrape options data
           with the historical quote scrape on the master scraper script
