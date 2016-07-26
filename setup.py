@@ -10,7 +10,7 @@ with open(path.join(here,'README.md'), encoding='utf-8') as f:
     long_desc = f.read()
 setup(
       name='Pynance',
-      version='0.2.1',
+      version='0.2.2',
       description="Financial Utilities Project for python",
       long_description=long_desc,
       url="https://github.com/rcoverick/Pynance",
@@ -28,6 +28,6 @@ setup(
       
       keywords='finance web scrape analysis budget stock market trading budgeting',
       packages=find_packages(),
-      install_requires=['lxml','requests','beautifulsoup4', 'pygresql'],
+      install_requires=['lxml','requests','beautifulsoup4'],
       
       )

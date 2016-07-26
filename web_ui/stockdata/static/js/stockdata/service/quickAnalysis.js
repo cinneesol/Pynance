@@ -4,15 +4,14 @@ var quickAnalysisService = function($http){
 		return response.data;
 	}
 	
-	var findNearTargetEntry = function(percentage,profit){
-		return $http.post("/stockdata/rest/near_target_entry_point.ws",{
-			profit:profit,
-			percent:percentage
+	var quickAnalysis = function(symbol){
+		return $http.post("/stockdata/rest/quick_analysis.ws",{
+			symbol:symbol
 		}).then(processResponse);
 	}
 	
 	return{
-		findNearTargetEntry:findNearTargetEntry
+		quickAnalysis:quickAnalysis
 	}
 }										
 

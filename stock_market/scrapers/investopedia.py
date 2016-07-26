@@ -60,23 +60,26 @@ def historic_quotes(ticker_symbol):
     data_table = soup.find_all("table", class_="table-data")[0]
     header_row = data_table.find_all("th")
     data_rows = data_table.find_all("tr")
-    for historic_quote in data_rows:
+    for h in range(1,len(data_rows)):
+        historic_quote=data_rows[h]
         quote = {}
         for i in range(0, len(header_row)):
             key = header_row[i].get_text()
             val = None
             try: 
                 val = historic_quote.find_all("td")[i].get_text()
+                if isNum(val):
+                    quote[str(key)]=float(val.replace(',',''))
+                elif key.lower()=="date":
+                    quote[str(key)]=toDate(val)
+                else:
+                    quote[str(key)]=str(val)
+                quote["Symbol"]=ticker_symbol.upper()
             except:
                 logging.error("Failed to extract historic quote value from:\n"+str(historic_quote))
+                continue
                 
-            if isNum(val):
-                quote[str(key)]=float(val.replace(',',''))
-            elif key.lower()=="date":
-                quote[str(key)]=toDate(val)
-            else:
-                quote[str(key)]=str(val)
-            quote["Symbol"]=ticker_symbol.upper()
+            
         if len(quote.keys())>1:
             quotes.append(quote)
     return quotes

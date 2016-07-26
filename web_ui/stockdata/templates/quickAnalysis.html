@@ -1,0 +1,86 @@
+<div class="container-fluid">
+    <div >
+	<label>Symbol</label><input type="text" data-ng-blur="doQuickAnalysis()"
+		data-ng-model="symbol" />
+	</div>
+	<div class="col-xs-5">
+		<table class="table table-bordered table-striped col-xs-5">
+			<tr>
+				<td class="col-xs-3">Symbol</td>
+				<td ng-bind="qaData.historic_quotes.Symbol"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Date</td>
+				<td ng-bind="qaData.historic_quotes.Date"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Average Day High</td>
+				<td ng-bind="qaData.historic_quotes.avg_day_high"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Average Day Low</td>
+				<td ng-bind="qaData.historic_quotes.avg_day_low"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Average Day Close</td>
+				<td ng-bind="qaData.historic_quotes.avg_close"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Average Volume</td>
+				<td ng-bind="qaData.historic_quotes.avg_volume"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Average Jump</td>
+				<td ng-bind="qaData.historic_quotes.avg_jump"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Average Dip</td>
+				<td ng-bind="qaData.historic_quotes.avg_dip"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Volume Weighted Average Close</td>
+				<td ng-bind="qaData.historic_quotes.volume_weighted_avg_close"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Day High Slope</td>
+				<td ng-bind="qaData.historic_quotes.day_high_slope"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Day Low Slope</td>
+				<td ng-bind="qaData.historic_quotes.day_low_slope"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Day Close Slope</td>
+				<td ng-bind="qaData.historic_quotes.close_slope"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Day High Std. Deviation</td>
+				<td ng-bind="qaData.historic_quotes.day_high_std_dev"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Day Low Std. Deviation</td>
+				<td ng-bind="qaData.historic_quotes.day_low_std_dev"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Day Close Std. Deviation</td>
+				<td ng-bind="qaData.historic_quotes.close_std_dev"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Day Dip Std. Deviation</td>
+				<td ng-bind="qaData.historic_quotes.dip_std_dev"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Day Jump Std. Deviation</td>
+				<td ng-bind="qaData.historic_quotes.jump_std_dev"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Target Entry Price</td>
+				<td ng-bind="qaData.historic_quotes.target_entry_price"></td>
+			</tr>
+			<tr>
+				<td class="col-xs-3">Target Exit Price</td>
+				<td ng-bind="qaData.historic_quotes.target_exit_price"></td>
+			</tr>
+		</table>
+	</div>
+</div>
