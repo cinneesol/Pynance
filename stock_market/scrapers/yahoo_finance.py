@@ -1,8 +1,9 @@
 """
-scrape information from Yahoo Finance using YQL
+scrape information from Yahoo Finance using YQL and 
+various yahoo finance scrape pages
 """
 
-from urllib.parse import quote
+from urllib.parse import quote,unquote
 import json
 import requests 
 
@@ -45,6 +46,19 @@ def quotes(symbol):
     request_url = prepare_query_url(query)
     return query_yql_json(request_url)
 
+def floating_outstanding_shares(symbol):
+    """returns the floating shares and outstanding shares of a stock"""
+    url = """http://download.finance.yahoo.com/d/quotes.csv?s={0}&f=f6j2&e=.csv
+""".format(symbol)
+    data = requests.get(url)
+    results = {'symbol':symbol,'float':"N/A",'outstanding':"N/A"}
+    if data.status_code == 200:
+        info = data.text.split(',')
+        results['float']=int(info[0].strip())
+        results['outstanding']=int(info[1].strip())
+    return results
+        
+    
 def historic_data(symbol,endDate,startDate):
     """returns historic data for a stock in the given date range. 
     dates must be in ISO format NOTE: if no results come back, try 
@@ -61,4 +75,4 @@ def historic_data(symbol,endDate,startDate):
     return query_yql_json(request_url)
 
 if __name__=='__main__':
-    print(historic_data('yhoo',"2016-07-27","2015-03-01"))
+    print(floating_outstanding_shares('cfr'))
