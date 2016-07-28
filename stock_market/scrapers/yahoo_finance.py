@@ -45,5 +45,20 @@ def quotes(symbol):
     request_url = prepare_query_url(query)
     return query_yql_json(request_url)
 
+def historic_data(symbol,endDate,startDate):
+    """returns historic data for a stock in the given date range. 
+    dates must be in ISO format NOTE: if no results come back, try 
+    shortening the date range to be no more than 15 months due to a 
+    constraint in YQL"""
+    
+    query = """
+    SELECT * FROM yahoo.finance.historicaldata  WHERE symbol = '{0}'
+    AND endDate='{1}' AND startDate='{2}'
+    """.strip().replace("\n", "").format(symbol,endDate,startDate)
+    print(query)
+    request_url = prepare_query_url(query)
+    print(request_url)
+    return query_yql_json(request_url)
+
 if __name__=='__main__':
-    print(quotes('CFR'))
+    print(historic_data('yhoo',"2016-07-27","2015-03-01"))
