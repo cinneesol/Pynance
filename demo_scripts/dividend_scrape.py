@@ -24,9 +24,11 @@ def save_dividend_history(dividend_payments):
                              float(payment['dividend amount'])))
     with sqlite3.connect(dbprops.sqlite_file) as conn:
         cursor = conn.cursor()
+        cursor.execute("BEGIN TRANSACTION")
         statement = cursor.executemany("""
         INSERT OR IGNORE INTO dividend_history(symbol,date,dividend_amt) VALUES(?,?,?) """,
         records)
+        cursor.commit()
         
 if __name__=='__main__':
     initialize_dividend_table()

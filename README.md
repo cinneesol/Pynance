@@ -11,6 +11,10 @@ BeautifulSoup 4
 
 #Current Features
     New features will be built and released as soon as possible. 
+    v 0.2.3:
+        -added Yahoo finance floating shares scraping function
+        -added Yahoo finance dividend history scraping function
+        
     v 0.2.2:
         -package restructuring
         -cleaning up test and demo files

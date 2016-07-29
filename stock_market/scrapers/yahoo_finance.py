@@ -52,10 +52,13 @@ def floating_outstanding_shares(symbol):
 """.format(symbol)
     data = requests.get(url)
     results = {'symbol':symbol,'float':"N/A",'outstanding':"N/A"}
-    if data.status_code == 200:
-        info = data.text.split(',')
-        results['float']=int(info[0].strip())
-        results['outstanding']=int(info[1].strip())
+    try:
+        if data.status_code == 200:
+            info = data.text.split(',')
+            results['float']=int(info[0].strip())
+            results['outstanding']=int(info[1].strip())
+    except Exception as e:
+        print(str(e)+"\t"+str(data.text))
     return results
         
     

@@ -2,12 +2,12 @@ from Pynance.stock_market.scrapers.nasdaq import exchange_listings, option_chain
 from Pynance.stock_market.scrapers.investopedia import historic_quotes, option_chain
 from Pynance.stock_market.analysis.historic_quote_analysis import analyze
 from Pynance.stock_market.analysis.options_analysis import analyze_options
-
+from Pynance.stock_market.scrapers.yahoo_finance import floating_outstanding_shares
 from multiprocessing import Pool
 import json
 import sqlite3
 from Pynance.database import dbprops
-from Pynance.stock_market import db_util
+from Pynance.database import db_util
 import time
 import os
 import sys
@@ -20,7 +20,8 @@ def process_work(company):
     analysis=None
     try:
         quotes = historic_quotes(company["Symbol"])
-        analysis = analyze(quotes)
+        floating_shares = floating_outstanding_shares(company["Symbol"].strip().lower())
+        analysis = analyze(quotes, floating_shares)
     except Exception as e:
         print("Error for historic quote analysis for  "+company["Symbol"]+" - "+str(e))
         return None    
@@ -58,7 +59,8 @@ def generate_historic_analytic_input_tuples(results):
                                result['volume_weighted_avg_close'],
                                result['target_entry_price'],
                                result['target_exit_price'],
-                               result['last_quote']['Close']
+                               result['last_quote']['Close'],
+                               result['floating_shares_ratio']
                                ))
             except Exception as e:
                 print(str(e))
@@ -103,6 +105,7 @@ if __name__=="__main__":
         #we want to remove and recreate the company overview table with each run
         db_cur.execute(dbprops.sqlite3_drop_company_overviews)
         db_cur.execute(dbprops.sqlite3_create_company_overview)
+        db_cur.execute("BEGIN TRANSACTION")
         for company in companies:
             try:
                 db_util.insert(table="company_overview",conn=db, data=company)
@@ -115,10 +118,14 @@ if __name__=="__main__":
         if include_options:
             options_analysis_tuple_list = generate_options_input_tuples(results)
         
+        #begin transaction for executing historic analytic table
+        db_cur.execute("BEGIN TRANSACTION")
         db_cur.executemany(dbprops.sqlite3_insert_historic_analytic,
         historic_analysis_tuple_list)
         db.commit()
         if include_options:
+            #begin transaction for options analysis insert
+            db_cur.execute("BEGIN TRANSACTION")
             db_cur.executemany(dbprops.sqlite3_insert_option_analysis,options_analysis_tuple_list)
             db.commit()
     except Exception as e:
