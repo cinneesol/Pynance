@@ -14,6 +14,7 @@ BeautifulSoup 4
     v 0.2.3:
         -added Yahoo finance floating shares scraping function
         -added Yahoo finance dividend history scraping function
+        -added floating shares ratio to historic quote analysis
         
     v 0.2.2:
         -package restructuring
