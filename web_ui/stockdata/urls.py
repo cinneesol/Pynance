@@ -16,7 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.views.generic import TemplateView
-from stockdata.views import find_near_target_entry
+from stockdata.views import find_near_target_entry,\
+get_company_overview
 from web_ui.stockdata.views import quick_analysis
 
 urlpatterns = [
@@ -26,5 +27,6 @@ urlpatterns = [
     url(r'^quickanalysis.html$', TemplateView.as_view(template_name='quickAnalysis.html')),
     
     url(r'^rest/quick_analysis.ws$', quick_analysis),
-    url(r'^rest/near_target_entry_point.ws$', find_near_target_entry )
+    url(r'^rest/near_target_entry_point.ws$', find_near_target_entry ),
+    url(r'^rest/companyoverview.ws$', get_company_overview)
 ]

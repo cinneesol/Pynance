@@ -134,7 +134,7 @@ sqlite3_find_upcoming_positive_options_analysis = """
         AND o.weighted_eff_put_price <= o.weighted_eff_call_price
     """
     
-sqlite3_find_company_profile="""
+sqlite3_find_company_profile_symbol="""
     SELECT * 
     FROM company_overview 
     WHERE symbol=? 
@@ -143,4 +143,9 @@ sqlite3_find_company_profile="""
         FROM company_overview
         WHERE symbol=?
         )
+    """
+sqlite3_find_company_profile_name="""
+    SELECT * 
+    FROM company_overview 
+    WHERE name LIKE ?
     """

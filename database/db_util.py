@@ -1,6 +1,25 @@
 
+import sqlite3
+from database import dbprops
 
-
+def query_for_result(query, params):
+    """Runs the query against the sqlite table and returns the result 
+    as a list of dictionaries"""
+    results = []
+    with(sqlite3.connect(dbprops.sqlite_file)) as connection:
+        connection.row_factory = sqlite3.Row
+        cur = connection.cursor()
+        cur.execute(query, params)
+         
+        for r in cur.fetchall():
+            result = {}
+            for field in r.keys():
+                result[field]=r[field]
+            results.append(result)
+    return results
+            
+            
+            
 def insert(table, conn=None, data={}):
     """
      Generates and executes sql insert statement for field/value pairs 
@@ -24,8 +43,3 @@ def insert(table, conn=None, data={}):
     cursor.execute(insert_stmt,tuple(values))
     conn.commit()
         
-        
-        
-        
-if __name__=='__main__':
-    insert(table="EMPLOYEES",name="Ryan",title="Developer2")
