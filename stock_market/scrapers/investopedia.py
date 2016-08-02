@@ -53,13 +53,22 @@ def parse_option_symbol(option_symbol):
     return result   
     
 def historic_quotes(ticker_symbol):
+    """returns a list of dicts of historic quotes for the ticker_symbol 
+       returns None if there is no historic data found
+    """
     quotes=[]
     url = "http://www.investopedia.com/markets/stocks/"+str(ticker_symbol)+"/historical"
     content = requests.get(url)
     soup = BeautifulSoup(content.text, 'lxml')
-    data_table = soup.find_all("table", class_="table-data")[0]
-    header_row = data_table.find_all("th")
-    data_rows = data_table.find_all("tr")
+    
+    try:
+        data_table = soup.find_all("table", class_="table-data")[0]
+        header_row = data_table.find_all("th")
+        data_rows = data_table.find_all("tr")
+    except Exception as e:
+        print("Could not find historic data table for "+str(ticker_symbol))
+        return None
+        
     for h in range(1,len(data_rows)):
         historic_quote=data_rows[h]
         quote = {}

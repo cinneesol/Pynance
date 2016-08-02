@@ -1,7 +1,13 @@
 from statistics import mean, pstdev
 
 def analyze(historic_quotes, floating_shares):
-    """returns a dict of statistics about the historic quotes for the symbol"""
+    """returns a dict of statistics about the historic quotes for the symbol
+       returns None if a None object is passed or there are not at least 
+       30 entries for historic quotes
+    """
+    if historic_quotes is None or len(historic_quotes) <=30:
+        return None
+    
     quotes = sorted(historic_quotes, key=lambda x: x['Date'], reverse=True)[:30]
     dips = [x['Open']-x['Low'] for x in quotes]
     jumps = [x['High']-x['Open'] for x in quotes]
@@ -32,12 +38,14 @@ def analyze(historic_quotes, floating_shares):
     analysis['Symbol']=most_recent['Symbol']
     analysis['Date']= most_recent['Date']
     analysis['last_quote'] = most_recent
+    
     try:
-        if floating_shares is not None:
+        if floating_shares is not None and floating_shares['float'] != "N/A" \
+        and floating_shares['outstanding'] != "N/A":
             analysis['floating_shares_ratio']=int(floating_shares['float'])/int(floating_shares['outstanding']) * 100;
         else:
             analysis['floating_shares_ratio']="N/A"
     except Exception as e:
-        print(e)
+        print("historicquoteanalysis::analyze exception:: "+str(e))
         analysis['floating_shares_ratio']="N/A"
     return analysis

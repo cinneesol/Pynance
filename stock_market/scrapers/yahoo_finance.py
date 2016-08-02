@@ -55,8 +55,10 @@ def floating_outstanding_shares(symbol):
     try:
         if data.status_code == 200:
             info = data.text.split(',')
-            results['float']=int(info[0].strip())
-            results['outstanding']=int(info[1].strip())
+            if info[0].strip().upper() != 'N/A':
+                results['float']=int(info[0].strip())
+            if info[1].strip().upper() != 'N/A':
+                results['outstanding']=int(info[1].strip())
     except Exception as e:
         print(str(e)+"\t"+str(data.text))
     return results
