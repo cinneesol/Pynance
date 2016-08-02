@@ -74,9 +74,7 @@ analyzing historic quote statistics for a company
 ```
     
 ###To run the Pynance Django web server
-To run the Pynance web server, alter the sqlite_file property in the
-web_ui/dbprops.py to point to the sqlite3 database file that your stock_market/dbprops.py 
-points to. Open a command window in the web_ui folder and run manage.py with the first parameter
+To run the Pynance web server, open a command window in the web_ui folder and run manage.py with the first parameter
 being 'runserver' and the second being an optional parameter
 for the port that you wish the server to be bound to. For example, to run the server off of port 8080:
 
