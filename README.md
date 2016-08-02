@@ -11,6 +11,11 @@ BeautifulSoup 4
 
 #Current Features
     New features will be built and released as soon as possible. 
+    v 0.2.3:
+        -added Yahoo finance floating shares scraping function
+        -added Yahoo finance dividend history scraping function
+        -added floating shares ratio to historic quote analysis
+        
     v 0.2.2:
         -package restructuring
         -cleaning up test and demo files
@@ -41,8 +46,13 @@ BeautifulSoup 4
 ### To use these modules in your own scripts:
 To use scraping and analytic features in your own scripts(Make sure that Pynance folder is in your PYTHONPATH): 
 
+get a list of companies and their information from the NYSE,AMEX,and NASDAQ exchanges:
+```
+ from Pynance.stock_market.scrapers.nasdaq import exchange_listings
+ 
+ companies = exchange_listings() 
+```
 getting historic quotes for a company: 
-
 ```
  from Pynance.stock_market.scrapers.investopedia import historic_quotes 
  
@@ -64,9 +74,7 @@ analyzing historic quote statistics for a company
 ```
     
 ###To run the Pynance Django web server
-To run the Pynance web server, alter the sqlite_file property in the
-web_ui/dbprops.py to point to the sqlite3 database file that your stock_market/dbprops.py 
-points to. Open a command window in the web_ui folder and run manage.py with the first parameter
+To run the Pynance web server, open a command window in the web_ui folder and run manage.py with the first parameter
 being 'runserver' and the second being an optional parameter
 for the port that you wish the server to be bound to. For example, to run the server off of port 8080:
 
