@@ -150,3 +150,38 @@ sqlite3_find_company_profile_name="""
     FROM company_overview 
     WHERE name LIKE ?
     """
+    
+sqlite3_query_most_dividend_payments_date = """
+SELECT CO.SYMBOL,
+   CO.NAME,
+   CO.LASTSALE,
+   CO.INDUSTRY,
+   DH.DATE, ((DH.DIVIDEND_AMT/CO.LASTSALE) * 100) AS YIELD,
+   count(DH.SYMBOL) NUM_DIVS
+ FROM DIVIDEND_HISTORY DH 
+ JOIN COMPANY_OVERVIEW CO 
+ ON DH.SYMBOL = CO.SYMBOL
+ COLLATE NOCASE
+ WHERE DATE >= ?
+  group by (DH.SYMBOL)
+ ORDER BY NUM_DIVS DESC
+ """
+ 
+  
+sqlite3_query_dividend_payment_amounts_industry="""
+SELECT CO.SYMBOL,
+   CO.NAME,
+   CO.LASTSALE,
+   CO.INDUSTRY,
+   DH.DATE, ((DH.DIVIDEND_AMT/CO.LASTSALE) * 100) AS YIELD,
+   count(DH.SYMBOL) NUM_DIVS
+ FROM DIVIDEND_HISTORY DH 
+ JOIN COMPANY_OVERVIEW CO 
+ ON DH.SYMBOL = CO.SYMBOL
+  COLLATE NOCASE
+ WHERE CO.INDUSTRY LIKE '%bank%'
+ AND DH.DATE >='2010'
+  group by (DH.SYMBOL)
+  HAVING NUM_DIVS>=24
+ ORDER BY NUM_DIVS DESC
+"""

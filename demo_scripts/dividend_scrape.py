@@ -18,10 +18,8 @@ def initialize_dividend_table():
 def save_dividend_history(dividend_payments):
     records =[]
     for payment in dividend_payments:
-        if payment['dividend amount'] is not None:
-            records.append((payment['symbol'].lower(),
-                             datetime.datetime.strptime(payment['date'], "%m/%d/%Y").strftime("%Y-%m-%d"),
-                             float(payment['dividend amount'])))
+        records.append((payment.symbol.upper(),payment.date.isoformat(),payment.dividend_amt)) 
+        
     if len(records)>0:
         with sqlite3.connect(dbprops.sqlite_file) as conn:
             cursor = conn.cursor()
@@ -30,7 +28,7 @@ def save_dividend_history(dividend_payments):
             INSERT OR IGNORE INTO dividend_history(symbol,date,dividend_amt) VALUES(?,?,?) """,
             records)
             conn.commit()
-            print("Successfully saved or udpated  "+str(len(records))+" records for "+dividend_payments[0]['symbol'])
+            print("Successfully saved or updated  "+str(len(records))+" records for "+dividend_payments[0].symbol)
         
 if __name__=='__main__':
     initialize_dividend_table()

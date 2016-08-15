@@ -7,10 +7,13 @@ Dependencies: Requests, Lxml, BeautifulSoup 4
 
 import requests 
 from bs4 import BeautifulSoup
-from datetime import date 
+
+from datetime import date, datetime
 import re
 import json
 import logging
+
+from Pynance.models import models 
 
 def toDate(string):
     """converts a string from "mm/dd/yyyy" to a date object"""
@@ -102,18 +105,19 @@ def dividend_history(ticker_symbol):
     data_table = soup.find_all("table", class_="table-data")[0]
     header_row = data_table.find_all("th")
     data_rows = data_table.find_all("tr")
-    for dividend_history in data_rows:
-        dividend={}
-        for i in range(0,len(header_row)):
-            key=header_row[i].get_text().lower()
-            val=None
-            try:
-                val=dividend_history.find_all("td")[i].get_text()
-            except:
-                logging.error("Failed to get dividend history from html:\n"+str(dividend_history))
-            dividend[key]=val 
-        dividend['symbol']=ticker_symbol.lower()
-        dividends.append(dividend)
+    
+    for dividend_history_i in data_rows:
+        dh = dividend_history_i.find_all("td")
+        try:
+            symbol = ticker_symbol.upper()
+            date = datetime.strptime(dh[0].text,
+                                     "%m/%d/%Y")
+            amt=float(dh[1].text);
+            dividend = models.DividendPayment(symbol,date,amt)
+            dividends.append(dividend)
+        except Exception as e:
+            print("Failure to get dividend history info for: ",str(e))
+            
     return dividends
     
             
