@@ -17,7 +17,7 @@ def quick_analysis(request):
     query_params=json.loads(request.body.decode('utf-8'))
     stock = query_params['symbol'].lower()
     analysis = {}
-    analysis['historic_quotes']=analyze(historic_quotes(stock))
+    analysis['historic_quotes']=analyze(historic_quotes(stock), None)
     try:
         analysis['options_analysis']=analyze_options(option_chain(stock))
     except:

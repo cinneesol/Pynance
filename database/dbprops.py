@@ -123,6 +123,18 @@ sqlite3_find_uptrend_historical_analysis = """
         AND h.day_low_slope > 0
         AND h.day_high_slope >0
     """
+sqlite3_find_bottoming_out_reversal ="""
+SELECT h.symbol,
+        h.date,
+        h.avg_day_high,
+        h.avg_day_low,
+        h.avg_close
+        FROM historic_analytic h
+        WHERE h.date=(SELECT MAX(date) FROM historic_analytic)
+        AND h.close_slope <0
+        AND h.day_low_slope > 0
+        AND h.day_high_slope >0
+"""
     
 sqlite3_find_upcoming_positive_options_analysis = """
         SELECT  o.symbol,

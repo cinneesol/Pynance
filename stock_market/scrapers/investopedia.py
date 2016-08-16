@@ -13,7 +13,7 @@ import re
 import json
 import logging
 
-from Pynance.models import models 
+import models 
 
 def toDate(string):
     """converts a string from "mm/dd/yyyy" to a date object"""
