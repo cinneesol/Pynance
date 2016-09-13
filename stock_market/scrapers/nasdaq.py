@@ -5,6 +5,8 @@ import requests
 import csv
 from bs4 import BeautifulSoup
 from datetime import datetime
+from pprint import pprint
+
 def exchange_listings():
     """retrieves exchange listings for NYSE,AMEX, and NASDAQ markets
         from nasdaq.com
@@ -122,6 +124,27 @@ def option_chain(ticker, dateindex=0):
         options.append(call_option)
         options.append(put_option)
     return options
+
+def recent_news_articles(symbol):
+    """retrieves recent articles urls about this stock from nasdaq.com's feed"""
+    prefix = "http://www.nasdaq.com/symbol/"
+    url = prefix+symbol.strip().lower()
+    page = requests.get(url)
+    soup=BeautifulSoup(page.text, 'lxml')
+    news_div = soup.select("#CompanyNewsCommentary")[0]
+    article_links = news_div.select("ul")[0].select("a")
+    articles = []
+    for article_link in article_links:
+        page = requests.get(article_link['href'])
+        soup = BeautifulSoup(page.text,'lxml')
+        
+        article = {
+            'text':str(soup.text),
+            'location':article_link['href']
+            }
+        articles.append(article)
+    pprint(str(articles))
+    
     
     
 if __name__=='__main__':
