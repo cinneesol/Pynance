@@ -116,12 +116,15 @@ sqlite3_find_uptrend_historical_analysis = """
         h.date,
         h.avg_day_high,
         h.avg_day_low,
-        h.avg_day_close
+        h.avg_close
         FROM historic_analytic h
         WHERE h.date=(SELECT MAX(date) FROM historic_analytic)
         AND h.close_slope >0
         AND h.day_low_slope > 0
         AND h.day_high_slope >0
+        AND h.avg_volume>100000
+        AND avg_close <=volume_weighted_avg_close
+            
     """
 sqlite3_find_bottoming_out_reversal ="""
 SELECT h.symbol,
@@ -134,6 +137,7 @@ SELECT h.symbol,
         AND h.close_slope <0
         AND h.day_low_slope > 0
         AND h.day_high_slope >0
+        AND h.avg_volume>100000
 """
     
 sqlite3_find_upcoming_positive_options_analysis = """
@@ -162,6 +166,14 @@ sqlite3_find_company_profile_name="""
     FROM company_overview 
     WHERE name LIKE ?
     """
+    
+    
+sqlite3_count_dividends_symbol_date="""
+SELECT COUNT(*),
+FROM DIVIDEND_HISTORY DH 
+WHERE DATE>=?
+AND SYMBOL=?
+"""
     
 sqlite3_query_most_dividend_payments_date = """
 SELECT CO.SYMBOL,
@@ -197,3 +209,15 @@ SELECT CO.SYMBOL,
   HAVING NUM_DIVS>=24
  ORDER BY NUM_DIVS DESC
 """
+
+sqlite3_query_low_float_potential_rebounds = """
+SELECT *
+FROM historic_analytic 
+where floating_shares_ratio <10
+AND DATE = (SELECT MAX(DATE) FROM historic_analytic)
+AND avg_volume > 100000
+AND day_high_slope>0
+AND day_low_slope>0
+AND close_slope>0
+"""
+
