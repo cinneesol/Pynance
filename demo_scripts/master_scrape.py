@@ -19,8 +19,8 @@ def process_work(company):
     """returns analysis of recent historic quotes for company."""
     analysis=None
     try:
-        quotes = historic_quotes(company["Symbol"])
-        floating_shares = floating_outstanding_shares(company["Symbol"].strip().lower())
+        quotes = historic_quotes(company.symbol)
+        floating_shares = floating_outstanding_shares(company.symbol)
         analysis = analyze(quotes, floating_shares)
     except Exception as e:
         print("Error for historic quote analysis for  "+company["Symbol"]+" - "+str(e))
@@ -90,6 +90,8 @@ if __name__=="__main__":
         include_options=False
         
     companies = exchange_listings()
+    print(companies[1])
+    sys.exit()
     processes = os.cpu_count()
     results = []
     with Pool(processes) as p:

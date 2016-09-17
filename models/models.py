@@ -53,18 +53,39 @@ class HistoricQuote(PynanceModel):
 
 class CompanyOverview(PynanceModel):
     
-    def __init__(self,symbol,name,lastsale,marketcap,ipoyear,sector,industry,summary_quote):
-        self.symbol=symbol
-        self.name=name 
-        self.lastsale=lastsale 
-        self.marketcap=marketcap 
-        self.ipoyear=ipoyear 
-        self.sector=sector 
-        self.industry=industry 
-        self.summary_quote=summary_quote 
+    def __init__(self):
+        self.symbol=None
+        self.name=None 
+        self.lastsale=None 
+        self.marketcap=None 
+        self.ipoyear=None 
+        self.sector=None 
+        self.industry=None 
+        self.summary_quote=None 
 
-
-
+    def parse_market_cap(self,marketcap):
+        """parse the market cap string to a number"""
+        marketcap=marketcap.replace('$','').strip()
+        if marketcap.endswith('M'):
+            factor=1000000
+            marketcap=marketcap.replace('M','')
+            return (float)(marketcap) *factor
+        elif marketcap.endswith('B'):
+            factor=1000000000
+            marketcap=marketcap.replace('B','')
+            return (float)(marketcap) *factor
+        
+    def __repr__(self):
+        ret_str = []
+        ret_str.append("Symbol: {0}, ".format(self.symbol)) 
+        ret_str.append("Name: {0}, ".format(self.name))
+        ret_str.append("Last Sale: {0}, ".format(self.lastsale))
+        ret_str.append("Market Cap: {0}, ".format(self.marketcap))
+        ret_str.append("IPO Year: {0}, ".format(self.ipoyear))
+        ret_str.append("Sector: {0}, ".format(self.sector))
+        ret_str.append("Industry: {0}, ".format(self.industry))
+        ret_str.append("Summary Quote: {0}".format(self.summary_quote))
+        return ''.join(ret_str)
 if __name__=='__main__':
     p= CompanyOverview("asdf","asdf""asdf","asdf""asdf","asdf""asdf","asdf","asdf","asdf","asdf");
     print(tuple(p))

@@ -6,13 +6,11 @@ import csv
 from bs4 import BeautifulSoup
 from datetime import datetime
 from pprint import pprint
-
+from Pynance.models.models import CompanyOverview
 def exchange_listings():
     """retrieves exchange listings for NYSE,AMEX, and NASDAQ markets
         from nasdaq.com
     """
-    
-    
     prefix = "http://www.nasdaq.com/screening/companies-by-name.aspx?letter=0=&exchange="
     suffix = "&render=download"
     exchanges = ['nasdaq','nyse','amex']
@@ -23,7 +21,19 @@ def exchange_listings():
         exchange_text = requests.get(url).text.split('\r\n')
         contents = csv.DictReader(exchange_text)
         for company in contents:
-            companies.append(company)
+            if len(company) is 0:
+                continue
+            c = CompanyOverview()
+            c.symbol=company['Symbol']
+            c.name=company['Name']
+            c.lastsale=company['LastSale']
+            c.marketcap=c.parse_market_cap(company['MarketCap'])
+            c.ipoyear=company['IPOyear']
+            c.sector=company['Sector']
+            c.industry=company['industry']
+            c.summary_quote=company['Summary Quote']
+            
+            companies.append(c)
     return companies
 
 def summary_quote(symbol):
