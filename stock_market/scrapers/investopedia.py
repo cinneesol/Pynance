@@ -13,7 +13,8 @@ import re
 import json
 import logging
 
-import models 
+import Pynance.models.models 
+from idlelib.ClassBrowser import _class_browser
 
 def toDate(string):
     """converts a string from "mm/dd/yyyy" to a date object"""
@@ -150,7 +151,30 @@ def option_chain(ticker_symbol):
             put_options.append(option)
     return {'calls':call_options, 'puts':put_options, 'date':date.today().isoformat()}
 
+def process_news_article_link(link):
+    """takes a beautifulsoup link and returns a dictionary with the location
+    and title of the article link """
+    article = {'location':link['href']}
+    article['title']= re.sub('\s+',' ', link.text)
+    return article
+    
+    
+def partner_news(symbol):
+    url="http://www.investopedia.com/markets/stocks/"+str(symbol).lower()+"/news"
+    page = requests.get(url)
+    soup=BeautifulSoup(page.text,'lxml')
+    news_article_selector = """#block-system-main > div >
+     div.layout-page > div > div.layout-col-right >
+      div.box.no-image.quote-item.clear"""
+    news_articles_li = soup.select(news_article_selector)[0].find_all("li")
+    news_articles = []
+    for entry in news_articles_li:
+        a_link = entry.find_all("a")[0]
+        news_articles.append(process_news_article_link(a_link))
+    print(len(news_articles))
+    
+    
 if __name__=='__main__':
-    print(json.dumps(dividend_history('cfr')))
+    partner_news('cfr')
 
     
