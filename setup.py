@@ -10,7 +10,7 @@ with open(path.join(here,'README.md'), encoding='utf-8') as f:
     long_desc = f.read()
 setup(
       name='Pynance',
-      version='0.2.3',
+      version='0.3.0',
       description="Financial Utilities Project for python",
       long_description=long_desc,
       url="https://github.com/rcoverick/Pynance",

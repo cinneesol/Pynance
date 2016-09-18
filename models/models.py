@@ -1,31 +1,7 @@
 
 from datetime import datetime
 
-class PynanceModel(object):
-    def getInsertStatement(self):
-        insert = """INSERT INTO """
-        insert += str(self.__class__.__name__.lower())+" ("
-        argc = 0
-        for v in vars(self):
-            if argc < len(vars(self))-1:
-                insert += v.lower()+", "
-                argc = argc+1
-            else:
-                insert += v.lower()+") "
-                argc = argc+1
-        insert += "VALUES("
-        for v in vars(self):
-            if argc>1:
-               insert += "?,"
-               argc = argc-1
-            else:
-               insert += "?)"
-               argc = argc-1
-        return insert 
-        
-        
-        return insert
-class DividendPayment(PynanceModel):
+class DividendPayment():
     def __init__(self,symbol, date, amt):
         self.symbol = symbol
         self.date = date
@@ -33,25 +9,34 @@ class DividendPayment(PynanceModel):
     
 
 
-class HistoricQuote(PynanceModel):
+class HistoricQuote():
     
-    def __init__(self, symbol, date, open, high, low, close, volume):
-        self.symbol=symbol
-        self.date=date
-        self.open=open
-        self.high=high
-        self.low=low 
-        self.close=close 
-        self.volume = volume 
+    def __init__(self):
+        self.symbol=None
+        self.date=None
+        self.open=None
+        self.high=None
+        self.low=None 
+        self.close=None 
+        self.volume = None 
     
     def day_change_percent(self):
-        return (self.close - self.open)
+        return (self.close - self.open)/self.open *100
     
     def day_spread_percent(self):
-        return self.high-self.low 
-    
+        return (self.high-self.low )/self.open * 100
+    def __repr__(self):
+        ret_str = []
+        ret_str.append("Symbol: {0}, ".format(self.symbol))
+        ret_str.append("Date: {0}, ".format(self.date))
+        ret_str.append("Open: {0}, ".format(self.open))
+        ret_str.append("High: {0}, ".format(self.high))
+        ret_str.append("Low: {0}, ".format(self.low))
+        ret_str.append("Close: {0}, ".format(self.close))
+        ret_str.append("Volume: {0}, ".format(self.volume))
+        return ''.join(ret_str)
 
-class CompanyOverview(PynanceModel):
+class CompanyOverview():
     
     def __init__(self):
         self.symbol=None
@@ -86,6 +71,4 @@ class CompanyOverview(PynanceModel):
         ret_str.append("Industry: {0}, ".format(self.industry))
         ret_str.append("Summary Quote: {0}".format(self.summary_quote))
         return ''.join(ret_str)
-if __name__=='__main__':
-    p= CompanyOverview("asdf","asdf""asdf","asdf""asdf","asdf""asdf","asdf","asdf","asdf","asdf");
-    print(tuple(p))
+    

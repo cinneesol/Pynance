@@ -26,7 +26,10 @@ def exchange_listings():
             c = CompanyOverview()
             c.symbol=company['Symbol']
             c.name=company['Name']
-            c.lastsale=company['LastSale']
+            try:
+                c.lastsale= (float)(company['LastSale'])
+            except Exception as e:
+                c.lastsale=-1
             c.marketcap=c.parse_market_cap(company['MarketCap'])
             c.ipoyear=company['IPOyear']
             c.sector=company['Sector']
@@ -37,7 +40,9 @@ def exchange_listings():
     return companies
 
 def summary_quote(symbol):
-    """retrieves the summary quote from nadaq.com"""
+    """
+    Returns a HistoricQuote 
+    """
     prefix = "http://www.nasdaq.com/symbol/"
     url = prefix+symbol.strip().lower()
     page = requests.get(url)
@@ -50,6 +55,7 @@ def summary_quote(symbol):
         key=data_cells[0].get_text().strip().split('\r\n')[0].replace('\xa0','')
         value = data_cells[1].get_text().strip().replace('\xa0','')
         summary[key]=value
+    print(summary)
     return summary
 
 def option_chain(ticker, dateindex=0):

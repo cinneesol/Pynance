@@ -13,7 +13,7 @@ import re
 import json
 import logging
 
-import Pynance.models.models 
+from Pynance.models.models import HistoricQuote
 from idlelib.ClassBrowser import _class_browser
 
 def toDate(string):
@@ -91,10 +91,17 @@ def historic_quotes(ticker_symbol):
             except:
                 logging.error("Failed to extract historic quote value from:\n"+str(historic_quote))
                 continue
-                
-            
+              
         if len(quote.keys())>1:
-            quotes.append(quote)
+            q = HistoricQuote()
+            q.symbol=quote['Symbol']
+            q.date = quote['Date']
+            q.open = (float)(quote['Open'])
+            q.high = (float)(quote['High'])
+            q.low  = (float)(quote['Low'])
+            q.close = (float)(quote['Close'])
+            q.volume = (float)(quote['Volume'])
+            quotes.append(q)
     return quotes
 
 def dividend_history(ticker_symbol):
