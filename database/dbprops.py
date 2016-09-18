@@ -57,10 +57,11 @@ sqlite3_create_historic_analytic = """
            target_exit_price real,
            last_close real,
            floating_shares_ratio real,
+           recent_price_swing integer,
            PRIMARY KEY (SYMBOL,DATE)
            )"""
 sqlite3_insert_historic_analytic = """
-        INSERT OR REPLACE INTO historic_analytic VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"""
+        INSERT OR REPLACE INTO historic_analytic VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"""
         
 sqlite3_create_option_analysis = """
 CREATE TABLE IF NOT EXISTS options_analysis(

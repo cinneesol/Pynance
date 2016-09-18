@@ -1,5 +1,5 @@
 import sqlite3
-from database import dbprops
+from Pynance.database import dbprops
 
 def query_for_result(query, params):
     """Runs the query against the sqlite table and returns the result 
